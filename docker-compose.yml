@@ -13,12 +13,14 @@ services:
       - db
     entrypoint: wait-for db:3306 -t 40 -- sh ./entrypoint.sh
   db:
+    platform: linux/amd64
     image: mysql:5.7
     command: --innodb-use-native-aio=0
     container_name: db
     restart: always
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./dump:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
